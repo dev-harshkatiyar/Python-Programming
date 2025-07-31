@@ -1,0 +1,94 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "b8d6cbb8-5841-4084-9393-6b07bab478d6",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Shortest Path Distance: 7\n",
+      "Path: [(0, 0), (1, 0), (2, 0), (2, 1), (2, 2), (3, 2), (3, 3), (3, 4)]\n"
+     ]
+    }
+   ],
+   "source": [
+    "from collections import deque\n",
+    "\n",
+    "def bfs_shortest_path(maze, start, end):\n",
+    "    rows, cols = len(maze), len(maze[0])\n",
+    "    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # Up, Down, Left, Right\n",
+    "    queue = deque([(start[0], start[1], [])])  # (row, col, path)\n",
+    "    visited = set([start])\n",
+    "    parent = {start: None}  # Store parent for path reconstruction\n",
+    "\n",
+    "    while queue:\n",
+    "        r, c, path = queue.popleft()\n",
+    "        path = path + [(r, c)]\n",
+    "\n",
+    "        # If reached the destination\n",
+    "        if (r, c) == end:\n",
+    "            return len(path) - 1, path  # Distance is path length - 1\n",
+    "\n",
+    "        # Explore neighbors\n",
+    "        for dr, dc in directions:\n",
+    "            nr, nc = r + dr, c + dc\n",
+    "            if 0 <= nr < rows and 0 <= nc < cols and maze[nr][nc] == 1 and (nr, nc) not in visited:\n",
+    "                queue.append((nr, nc, path))\n",
+    "                visited.add((nr, nc))\n",
+    "                parent[(nr, nc)] = (r, c)\n",
+    "\n",
+    "    return -1, []  # No path found\n",
+    "\n",
+    "# Example Usage\n",
+    "maze = [\n",
+    "    [1, 0, 1, 1, 1],\n",
+    "    [1, 0, 1, 0, 1],\n",
+    "    [1, 1, 1, 0, 1],\n",
+    "    [0, 0, 1, 1, 1]\n",
+    "]\n",
+    "start = (0, 0)\n",
+    "end = (3, 4)\n",
+    "\n",
+    "distance, path = bfs_shortest_path(maze, start, end)\n",
+    "if distance != -1:\n",
+    "    print(\"Shortest Path Distance:\", distance)\n",
+    "    print(\"Path:\", path)\n",
+    "else:\n",
+    "    print(\"No path found!\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3478f9c0-d934-4f85-841b-6418f52d862d",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.8"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
